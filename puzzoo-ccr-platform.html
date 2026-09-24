@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puzzoo — CCR Platform™ | Chance-Based Gaming Engine | G2E 2026</title>
+<meta name="description" content="CCR Platform™ by Puzzoo — a ground-up game engine built specifically for chance-based gaming. Slots, Lottery, Sweepstakes, Raffles, Instant Games. Meet us at G2E 2026, Las Vegas.">
+<style>
+  :root{
+    --bg:#07060f;
+    --bg2:#0c0a1a;
+    --panel:#100e22;
+    --line:rgba(255,255,255,.08);
+    --txt:#eef0ff;
+    --mut:#9aa0c3;
+    --cyan:#22d3ee;
+    --violet:#a855f7;
+    --pink:#ec4899;
+    --gold:#fbbf24;
+    --grad:linear-gradient(90deg,#22d3ee,#a855f7 55%,#ec4899);
+    --grad-soft:linear-gradient(135deg,rgba(34,211,238,.14),rgba(168,85,247,.14) 55%,rgba(236,72,153,.14));
+    --r:18px;
+    --font:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--txt);font-family:var(--font);line-height:1.6;overflow-x:hidden}
+  ::selection{background:rgba(168,85,247,.45)}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%}
+  .wrap{width:min(1180px,92%);margin:0 auto}
+  h1,h2,h3{line-height:1.12;letter-spacing:-.02em}
+  .eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.78rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.1rem}
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--grad);border-radius:2px}
+  .sec{padding:6.2rem 0}
+  .sec h2{font-size:clamp(1.9rem,3.6vw,2.9rem);font-weight:800;margin-bottom:.9rem}
+  .sec .lead{color:var(--mut);font-size:1.06rem;max-width:640px}
+  .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* ---------- NAV ---------- */
+  nav{position:fixed;inset:0 0 auto;z-index:50;backdrop-filter:blur(14px);background:rgba(7,6,15,.72);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .logo{font-size:1.45rem;font-weight:900;letter-spacing:-.03em}
+  .logo b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:900}
+  .logo small{display:block;font-size:.58rem;font-weight:600;letter-spacing:.32em;color:var(--mut);margin-top:-4px}
+  .nav-links{display:flex;gap:2rem;align-items:center}
+  .nav-links a{font-size:.9rem;color:var(--mut);font-weight:600;transition:color .2s}
+  .nav-links a:hover{color:var(--txt)}
+  .btn{display:inline-flex;align-items:center;gap:.55rem;padding:.78rem 1.5rem;border-radius:999px;font-weight:700;font-size:.92rem;border:1px solid transparent;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s;white-space:nowrap}
+  .btn-primary{background:var(--grad);color:#0a0714;box-shadow:0 8px 30px rgba(168,85,247,.35)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 44px rgba(168,85,247,.5)}
+  .btn-ghost{border-color:var(--line);color:var(--txt);background:rgba(255,255,255,.03)}
+  .btn-ghost:hover{border-color:rgba(168,85,247,.6);background:rgba(168,85,247,.08)}
+  .burger{display:none;background:none;border:0;color:var(--txt);font-size:1.5rem;cursor:pointer}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;padding:11rem 0 5rem;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(700px 420px at 82% 12%,rgba(168,85,247,.22),transparent 60%),
+      radial-gradient(620px 400px at 8% 78%,rgba(34,211,238,.14),transparent 60%),
+      radial-gradient(500px 380px at 55% 110%,rgba(236,72,153,.12),transparent 60%);}
+  .hero-bg::after{content:"";position:absolute;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.22) 1px,transparent 1.6px);
+    background-size:34px 34px;mask-image:radial-gradient(600px 300px at 80% 20%,#000,transparent 70%);opacity:.5}
+  .hero-grid{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:3.5rem;align-items:center}
+  .badge{display:inline-flex;align-items:center;gap:.6rem;padding:.45rem 1rem;border-radius:999px;border:1px solid rgba(34,211,238,.35);background:rgba(34,211,238,.07);font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.4rem}
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);animation:pulse 1.8s infinite}
+  @keyframes pulse{50%{opacity:.35}}
+  .hero h1{font-size:clamp(2.6rem,5.4vw,4.3rem);font-weight:900;margin-bottom:1.3rem}
+  .hero p.sub{color:var(--mut);font-size:1.12rem;max-width:560px;margin-bottom:1.1rem}
+  .hero p.sub strong{color:var(--txt);font-weight:700}
+  .verticals{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.6rem 0 2rem}
+  .chip{padding:.42rem .95rem;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:.82rem;font-weight:600;color:#cfd3f0;transition:border-color .2s,background .2s}
+  .chip:hover{border-color:rgba(34,211,238,.5);background:rgba(34,211,238,.07)}
+  .chip.accent{border-color:rgba(251,191,36,.45);color:var(--gold)}
+  .hero-cta{display:flex;gap:.9rem;flex-wrap:wrap}
+  .hero-meta{display:flex;gap:2rem;margin-top:2.6rem;flex-wrap:wrap}
+  .hm b{display:block;font-size:1.7rem;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hm span{font-size:.78rem;color:var(--mut);letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+
+  /* slot machine visual */
+  .slot-stage{position:relative;display:flex;justify-content:center}
+  .slot-card{position:relative;width:min(330px,100%);border-radius:22px;padding:14px;background:linear-gradient(160deg,#16122e,#0a0819);border:1px solid rgba(168,85,247,.4);box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 60px rgba(168,85,247,.18);transform:rotate(2deg)}
+  .slot-card::before{content:"";position:absolute;inset:-2px;border-radius:24px;padding:2px;background:var(--grad);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.7;pointer-events:none}
+  .slot-head{display:flex;justify-content:space-between;align-items:center;padding:.2rem .4rem .8rem;font-size:.7rem;font-weight:800;letter-spacing:.24em;color:var(--mut)}
+  .slot-head b{color:var(--gold)}
+  .reels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#05040c;border-radius:12px;padding:10px;border:1px solid var(--line)}
+  .reel{height:64px;border-radius:9px;background:linear-gradient(180deg,#1b1638,#0d0b1e);border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:1.7rem;font-weight:900;overflow:hidden}
+  .reel span{display:block}
+  .slot-foot{margin-top:.9rem;display:flex;justify-content:space-between;align-items:center;padding:0 .3rem}
+  .slot-foot .mini{font-size:.68rem;color:var(--mut);letter-spacing:.18em;font-weight:700}
+  .glowbtn{width:40px;height:40px;border-radius:50%;background:var(--grad);box-shadow:0 0 22px rgba(236,72,153,.55);animation:spinGlow 6s linear infinite}
+  @keyframes spinGlow{to{filter:hue-rotate(360deg)}}
+  .marquee-float{position:absolute;bottom:-8px;left:-26px;background:rgba(12,10,26,.92);border:1px solid rgba(34,211,238,.35);border-radius:14px;padding:.7rem 1.1rem;font-size:.78rem;font-weight:700;color:var(--cyan);letter-spacing:.08em;box-shadow:0 16px 40px rgba(0,0,0,.5);transform:rotate(-3deg)}
+  .marquee-float small{display:block;color:var(--mut);font-weight:600;letter-spacing:.04em}
+
+  /* ---------- STATS ---------- */
+  .stats{border-block:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.02),transparent)}
+  .stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;padding:3rem 0}
+  .stat b{display:block;font-size:clamp(2rem,3.4vw,2.9rem);font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat span{color:var(--mut);font-size:.9rem}
+
+  /* ---------- MODULES TOUR ---------- */
+  .mod{border:1px solid var(--line);border-radius:var(--r);background:var(--panel);padding:2.2rem;margin-bottom:1.4rem;transition:border-color .25s,transform .25s}
+  .mod:hover{border-color:rgba(168,85,247,.45);transform:translateY(-3px)}
+  .mod-head{display:grid;grid-template-columns:auto 1fr;gap:1.6rem;align-items:start}
+  .mod-num{font-size:.85rem;font-weight:800;color:var(--cyan);border:1px solid rgba(34,211,238,.35);border-radius:10px;padding:.45rem .7rem;letter-spacing:.1em}
+  .mod h3{font-size:1.35rem;font-weight:800;margin-bottom:.4rem}
+  .mod .tagline{color:var(--mut);font-style:italic;margin-bottom:1rem}
+  .mod ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.55rem 2rem}
+  .mod li{position:relative;padding-left:1.4rem;color:#c6cade;font-size:.95rem}
+  .mod li::before{content:"◆";position:absolute;left:0;top:2px;font-size:.6rem;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* ---------- FOUNDER ---------- */
+  .founder{background:var(--grad-soft);border-block:1px solid var(--line)}
+  .founder-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:3.5rem;align-items:center}
+  .founder-card{border-radius:22px;background:linear-gradient(160deg,#181334,#0b0919);border:1px solid rgba(168,85,247,.4);padding:2.6rem 2.2rem;text-align:center;box-shadow:0 30px 70px rgba(0,0,0,.5)}
+  .avatar{width:104px;height:104px;border-radius:50%;margin:0 auto 1.2rem;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:900;color:#0a0714;background:var(--grad);box-shadow:0 0 40px rgba(168,85,247,.5)}
+  .founder-card h3{font-size:1.4rem;font-weight:800}
+  .founder-card .role{color:var(--cyan);font-weight:700;font-size:.9rem;margin:.2rem 0 1.1rem;letter-spacing:.05em}
+  .founder-card p{color:var(--mut);font-size:.93rem}
+  .cred-chips{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:1.3rem}
+  .cred-chips span{font-size:.72rem;font-weight:700;padding:.35rem .75rem;border-radius:999px;border:1px solid var(--line);color:#cfd3f0;background:rgba(255,255,255,.03)}
+  .founder-copy .nda{margin-top:1.6rem;display:flex;gap:.9rem;align-items:flex-start;border:1px dashed rgba(251,191,36,.45);border-radius:14px;padding:1.1rem 1.3rem;background:rgba(251,191,36,.05)}
+  .founder-copy .nda .ico{font-size:1.3rem}
+  .founder-copy .nda p{font-size:.92rem;color:#e8d9a8}
+
+  /* ---------- G2E / MEET ---------- */
+  .meet{position:relative;overflow:hidden}
+  .meet .glow{position:absolute;inset:0;background:radial-gradient(600px 380px at 50% 0%,rgba(168,85,247,.18),transparent 65%);pointer-events:none}
+  .meet-card{position:relative;border-radius:26px;border:1px solid rgba(168,85,247,.4);background:linear-gradient(160deg,#151129,#0a0817);padding:3.2rem;text-align:center;box-shadow:0 40px 90px rgba(0,0,0,.55)}
+  .meet-card::before{content:"";position:absolute;inset:-1px;border-radius:27px;padding:1px;background:var(--grad);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.55;pointer-events:none}
+  .g2e-badge{display:inline-block;font-size:.75rem;font-weight:800;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(251,191,36,.4);border-radius:999px;padding:.45rem 1.1rem;margin-bottom:1.4rem;background:rgba(251,191,36,.06)}
+  .meet-card h2{margin-bottom:.8rem}
+  .meet-card .lead{margin:0 auto 2rem}
+  .meet-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+  .hashtags{margin-top:2.2rem;font-size:.78rem;color:var(--mut);letter-spacing:.03em;line-height:2}
+  .hashtags b{color:var(--cyan);font-weight:700}
+
+  footer{border-top:1px solid var(--line);padding:2.4rem 0;color:var(--mut);font-size:.85rem}
+  .foot-in{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;align-items:center}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+  .rv.in{opacity:1;transform:none}
+
+  @media(max-width:960px){
+    .hero-grid,.founder-grid{grid-template-columns:1fr}
+    .slot-stage{margin-top:1rem}
+    .stats .wrap{grid-template-columns:repeat(2,1fr)}
+    .nav-links{display:none;position:absolute;top:68px;left:0;right:0;flex-direction:column;background:rgba(7,6,15,.97);padding:1.4rem;border-bottom:1px solid var(--line);gap:1.1rem}
+    .nav-links.open{display:flex}
+    .burger{display:block}
+    .mod ul{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <a class="logo" href="#top">PUZ<b>ZOO</b><small>GAMES · CCR PLATFORM™</small></a>
+    <div class="nav-links" id="navLinks">
+      <a href="#platform">Platform</a>
+      <a href="#concepts">Concepts</a>
+      <a href="#founder">Founder</a>
+      <a href="#meet">G2E 2026</a>
+    </div>
+    <a class="btn btn-primary" href="#meet">Book 15 min</a>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="badge"><span class="dot"></span> G2E 2026 · Las Vegas · Something different is coming</div>
+      <h1>We're bringing something <span class="grad-text">different</span> to Vegas this year.</h1>
+      <p class="sub">Meet <strong>CCR Platform™</strong> — a ground-up game engine built specifically for <strong>chance-based gaming</strong>. Not a reskin. Not an incremental update. A full rebuild, forged from decades of knowing exactly what keeps players engaged, staying, and returning.</p>
+      <div class="verticals">
+        <span class="chip">🎰 Slots</span>
+        <span class="chip">Lottery</span>
+        <span class="chip">Sweepstakes</span>
+        <span class="chip">Raffles</span>
+        <span class="chip">Instant Games</span>
+        <span class="chip accent">And beyond</span>
+      </div>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#meet">Book a G2E meeting →</a>
+        <a class="btn btn-ghost" href="#platform">Explore the platform</a>
+      </div>
+      <div class="hero-meta">
+        <div class="hm"><b>12</b><span>Concepts</span></div>
+        <div class="hm"><b>5</b><span>Working prototypes</span></div>
+        <div class="hm"><b>1</b><span>Patented mechanic</span></div>
+        <div class="hm"><b>30<span style="font-size:1rem">yrs</span></b><span>Industry experience</span></div>
+      </div>
+    </div>
+    <div class="slot-stage">
+      <div class="slot-card">
+        <div class="slot-head"><span>CCR™</span><b>★★★★★</b></div>
+        <div class="reels">
+          <div class="reel"><span id="r0">7️⃣</span></div>
+          <div class="reel"><span id="r1">💎</span></div>
+          <div class="reel"><span id="r2">7️⃣</span></div>
+        </div>
+        <div class="slot-foot">
+          <span class="mini">CHANCE-BASED · REBUILT FROM ZERO</span>
+          <div class="glowbtn"></div>
+        </div>
+      </div>
+      <div class="marquee-float">ONE PATENTED MECHANIC<small>social · multiplayer · jackpots</small></div>
+    </div>
+  </div>
+</header>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="wrap">
+    <div class="stat rv"><b data-n="12">0</b><span>Game concepts in development</span></div>
+    <div class="stat rv"><b data-n="5">0</b><span>Working prototypes today</span></div>
+    <div class="stat rv"><b data-n="10">0</b><span>US patents held</span></div>
+    <div class="stat rv"><b data-n="30">0</b><span>Years in the games industry</span></div>
+  </div>
+</div>
+
+<!-- PLATFORM PILLARS -->
+<section class="sec" id="platform">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow">The Engine</div>
+      <h2>Built for chance-based gaming.<br><span class="grad-text">Designed for regulated markets.</span></h2>
+      <p class="lead">CCR Platform™ is a full rebuild of the chance-based game engine — engineered with flexibility, scalability, and security at its core, and with regulated-market requirements in mind from day one.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;margin-top:2.6rem">
+      <div class="mod rv"><div class="mod-head"><div class="mod-num">01</div><div><h3>Flexibility</h3><p class="tagline">One engine, every chance-based format.</p><ul><li>Slots, lottery, sweepstakes, raffles & instant games on one core</li><li>Social & multiplayer modes built in</li></ul></div></div></div>
+      <div class="mod rv"><div class="mod-head"><div class="mod-num">02</div><div><h3>Scalability</h3><p class="tagline">From prototype to portfolio.</p><ul><li>12 concepts → 5 working prototypes and growing</li><li>Architecture ready for operator-scale deployment</li></ul></div></div></div>
+      <div class="mod rv"><div class="mod-head"><div class="mod-num">03</div><div><h3>Security</h3><p class="tagline">Serious engineering, seriously protected.</p><ul><li>Secure-by-design platform architecture</li><li>10 US patents behind the mechanics</li></ul></div></div></div>
+      <div class="mod rv"><div class="mod-head"><div class="mod-num">04</div><div><h3>Regulated Markets</h3><p class="tagline">Compliance considered from line one.</p><ul><li>Built with regulated-market requirements in mind</li><li>Ready for certification and jurisdictional review</li></ul></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONCEPTS TOUR -->
+<section class="sec" id="concepts" style="background:var(--bg2);border-block:1px solid var(--line)">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow">Behind the Scenes</div>
+      <h2>The vision is already <span class="grad-text">taking shape.</span></h2>
+      <p class="lead">Twelve concepts. Five working prototypes. One patented mechanic. More details under NDA — but here's the shape of what's coming.</p>
+    </div>
+
+    <div class="mod rv" style="margin-top:2.6rem">
+      <div class="mod-head">
+        <div class="mod-num">01</div>
+        <div>
+          <h3>CCR Platform™ Core</h3>
+          <p class="tagline">Not a reskin. Not an incremental update. A full rebuild.</p>
+          <ul>
+            <li>Ground-up engine purpose-built for chance-based play</li>
+            <li>Forged from decades of player-engagement expertise</li>
+            <li>Designed around what makes players stay — and return</li>
+            <li>Patented core mechanic at the heart of the system</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="mod rv">
+      <div class="mod-head">
+        <div class="mod-num">02</div>
+        <div>
+          <h3>12 Concepts · 5 Working Prototypes</h3>
+          <p class="tagline">Real builds, playable today — under NDA.</p>
+          <ul>
+            <li>Slots spanning classic to next-gen</li>
+            <li>Lottery, sweepstakes, raffles & instant games</li>
+            <li>Social & multiplayer experiences</li>
+            <li>Jackpots engineered to be bigger and smarter</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="mod rv">
+      <div class="mod-head">
+        <div class="mod-num">03</div>
+        <div>
+          <h3>Where the Industry Is Headed</h3>
+          <p class="tagline">A paradigm shift is coming. Early movers win big here.</p>
+          <ul>
+            <li>A new mechanic class operators haven't seen before</li>
+            <li>Engine economics built for the next era of iGaming</li>
+            <li>Full details shared in person, under NDA</li>
+            <li>See it live at G2E 2026 in Las Vegas</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="sec founder" id="founder">
+  <div class="wrap founder-grid">
+    <div class="founder-card rv">
+      <div class="avatar">ZO</div>
+      <h3>Zeki Orak</h3>
+      <div class="role">Founder & CEO · Puzzoo</div>
+      <p>30-year games-industry veteran. Vivendi Games published Puzzoo's mobile titles — two of them factory-installed on Nokia phones for the US market.</p>
+      <div class="cred-chips">
+        <span>Vivendi Games</span><span>Nokia · US market</span><span>Hasbro</span>
+        <span>Mattel</span><span>Fisher-Price</span><span>Tiger Electronics</span><span>10 US Patents</span>
+      </div>
+    </div>
+    <div class="founder-copy rv">
+      <div class="eyebrow">The Team Behind It</div>
+      <h2>Decades of knowing what<br>keeps players <span class="grad-text">engaged.</span></h2>
+      <p class="lead" style="margin-top:1rem">CCR Platform™ isn't a bet on a trend — it's the product of a career spent building games people love, for some of the biggest names in the business. That experience is baked into every line of the engine: what holds attention, what earns a return visit, and what survives in regulated markets.</p>
+      <div class="nda">
+        <div class="ico">🔒</div>
+        <p><strong>Under NDA.</strong> The vision is already taking shape behind the scenes. Full architecture, prototypes and the patented mechanic are shared in person — 15 minutes at G2E is all it takes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEET AT G2E -->
+<section class="sec meet" id="meet">
+  <div class="glow"></div>
+  <div class="wrap">
+    <div class="meet-card rv">
+      <div class="g2e-badge">🎰 G2E 2026 · Las Vegas</div>
+      <h2>Curious about what's next in iGaming?<br><span class="grad-text">Let's connect.</span></h2>
+      <p class="lead" style="max-width:560px">15 minutes. Just a conversation and a demo about where the industry is headed. Drop a comment or DM Zeki to lock in a time.</p>
+      <div class="meet-row">
+        <a class="btn btn-primary" href="https://www.linkedin.com/" target="_blank" rel="noopener">DM Zeki on LinkedIn →</a>
+        <a class="btn btn-ghost" href="mailto:hello@puzzoo.com?subject=G2E%202026%20Meeting%20—%20CCR%20Platform">Email to book a slot</a>
+      </div>
+      <div class="hashtags">
+        <b>#G2E2026</b> <b>#iGaming</b> <b>#GamingTechnology</b> <b>#GameDevelopment</b> <b>#GamingPlatform</b> <b>#Slots</b> <b>#Lottery</b> <b>#Sweepstakes</b> <b>#GameEngine</b> <b>#Innovation</b> <b>#Puzzoo</b> <b>#CCRPlatform</b>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <div><b style="color:var(--txt)">PUZZOO</b> · CCR Platform™ — Real innovation. Real players. Real results.</div>
+    <div>© 2026 Puzzoo. CCR Platform™ is a trademark of Puzzoo. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  // mobile nav
+  const burger=document.getElementById('burger'),links=document.getElementById('navLinks');
+  burger.addEventListener('click',()=>links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
+
+  // scroll reveal
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+  // stat count-up
+  const so=new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting)return;so.unobserve(e.target);
+    const el=e.target,end=+el.dataset.n,t0=performance.now();
+    (function tick(t){const p=Math.min((t-t0)/1200,1);el.textContent=Math.round(end*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(tick)})(t0);
+  }),{threshold:.5});
+  document.querySelectorAll('[data-n]').forEach(el=>so.observe(el));
+
+  // slot reels idle spin
+  const sym=['7️⃣','💎','🔔','⭐','💲','🍀','🎰'];
+  const reels=[0,1,2].map(i=>document.getElementById('r'+i));
+  function spin(){
+    reels.forEach((r,i)=>{
+      const target=sym[Math.floor(Math.random()*sym.length)];
+      let n=0;
+      const iv=setInterval(()=>{
+        r.textContent=sym[Math.floor(Math.random()*sym.length)];
+        if(++n>6+i*4){clearInterval(iv);r.textContent=target;
+          if(i===2&&target==='7️⃣'){r.style.textShadow='0 0 18px #fbbf24';setTimeout(()=>r.style.textShadow='',1600)}}
+      },70);
+    });
+  }
+  setTimeout(spin,900);setInterval(spin,5200);
+</script>
+</body>
+</html>
