@@ -235,9 +235,9 @@ st.markdown('<h2>Curious about what\'s next in iGaming?<br><span class="grad">Le
 st.markdown('<p class="lead" style="max-width:560px;margin:auto">15 minutes. Just a conversation and a demo about where the industry is headed. Drop a comment or DM Zeki to lock in a time.</p>', unsafe_allow_html=True)
 a,b = st.columns(2)
 with a:
-    st.link_button("DM Zeki on LinkedIn →", "https://www.linkedin.com/", use_container_width=True)
+    st.link_button("DM Zeki on LinkedIn →", "https://www.linkedin.com/in/zekiorak/", use_container_width=True)
 with b:
-    st.link_button("Email to book a slot", "mailto:hello@puzzoo.com?subject=G2E%202026%20Meeting%20%E2%80%94%20CCR%20Platform", use_container_width=True)
+    st.link_button("Email to book a slot", "mailto:info@puzzoo.com?subject=G2E%202026%20Meeting%20%E2%80%94%20CCR%20Platform", use_container_width=True)
 st.markdown('<p style="color:#9aa0c3;margin-top:1.5rem">#G2E2026 &nbsp; #iGaming &nbsp; #GamingTechnology &nbsp; #GameDevelopment &nbsp; #GamingPlatform &nbsp; #Slots &nbsp; #Lottery &nbsp; #Sweepstakes &nbsp; #GameEngine &nbsp; #Innovation &nbsp; #Puzzoo &nbsp; #CCRPlatform</p>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
