@@ -146,6 +146,7 @@ with left:
 
 with right:
     st.markdown('<div class="slot">', unsafe_allow_html=True)
+    st.image("trigger-happy-bonus.png", width=400)
     st.markdown('<div style="display:flex;justify-content:space-between;color:#9aa0c3;font-size:.7rem;font-weight:800;letter-spacing:.2em">CCR™ <span style="color:#fbbf24">★★★★★</span></div><br>', unsafe_allow_html=True)
     r = st.columns(3)
     for col, value in zip(r, st.session_state.reels):
