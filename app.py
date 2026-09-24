@@ -203,8 +203,20 @@ concepts = [
 ("03","Where the Industry Is Headed","A paradigm shift is coming. Early movers win big here.",
  ["A new mechanic class operators haven't seen before","Engine economics built for the next era of iGaming","Full details shared in person, under NDA","See it live at G2E 2026 in Las Vegas"]),
 ]
-for num,title,tag,items in concepts:
-    st.markdown(f'<div class="card"><div class="module-num">{num}</div><h3>{title}</h3><p style="color:#9aa0c3;font-style:italic">{tag}</p><ul>{"".join("<li style=\\"color:#c6cade;margin:.35rem 0\\">"+x+"</li>" for x in items)}</ul></div>', unsafe_allow_html=True)
+for num, title, tag, items in concepts:
+    items_html = "".join(
+        f'<li style="color:#c6cade;margin:.35rem 0">{x}</li>'
+        for x in items
+    )
+    card_html = f"""
+    <div class="card">
+        <div class="module-num">{num}</div>
+        <h3>{title}</h3>
+        <p style="color:#9aa0c3;font-style:italic">{tag}</p>
+        <ul>{items_html}</ul>
+    </div>
+    """
+    st.markdown(card_html, unsafe_allow_html=True)
 
 # ---------- Founder ----------
 st.markdown("<br><br>", unsafe_allow_html=True)
